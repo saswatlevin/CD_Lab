@@ -1,8 +1,12 @@
 %{
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "symbol_table.h"
+#define YY_DECL struct token *yylex(void)
 
-
-char* Type(struct token *tk)
+char *Type(struct token *tk)
 {
 switch(tk->type)
 {
@@ -42,11 +46,6 @@ return "UNIDENTIFIED";
 
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "symbol_table.h"
-#define YY_DECL struct token *yylex(void)
 
 int lineno=1,colno=1;
 //struct token* tk;
@@ -196,10 +195,11 @@ int  main(int argc,char **argv)
    yyin=fopen(argv[1],"r");
    int cnt=0;
    while(tk=yylex()){
-        printf("\n%d\t\t%s\t\t%d\t\t%d\t\t%s\n\n",cnt,tk->lexeme,tk->rowno,tk->colno,Type(tk));
+        //printf("<\n%d\t\t%s\t\t%d\t\t%d\t\t%s\n\n>",cnt,tk->lexeme,tk->rowno,tk->colno,Type(tk));
         
         cnt++;
    INSERT(tk);
+   //Display();
    }
 return 0;
 }

@@ -599,9 +599,13 @@ char *yytext;
 #line 1 "lexer.l"
 #line 2 "lexer.l"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "symbol_table.h"
+#define YY_DECL struct token *yylex(void)
 
-
-char* Type(struct token *tk)
+char *Type(struct token *tk)
 {
 switch(tk->type)
 {
@@ -641,11 +645,6 @@ return "UNIDENTIFIED";
 
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "symbol_table.h"
-#define YY_DECL struct token *yylex(void)
 
 int lineno=1,colno=1;
 //struct token* tk;
@@ -675,8 +674,8 @@ tk->rowno=rowno;
 tk->colno=colno;
 tk->type=type;
 }
+#line 678 "lex.yy.c"
 #line 679 "lex.yy.c"
-#line 680 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -893,15 +892,15 @@ YY_DECL
 		}
 
 	{
-#line 81 "lexer.l"
+#line 80 "lexer.l"
 
 
 
 
-#line 86 "lexer.l"
+#line 85 "lexer.l"
           
 
-#line 905 "lex.yy.c"
+#line 904 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -960,7 +959,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 88 "lexer.l"
+#line 87 "lexer.l"
 {tk=allocToken();
             setTokenArgs(tk,yytext,-1,lineno,colno,LOGICAL_OPERATOR);
             colno+=strlen(yytext);
@@ -968,7 +967,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 93 "lexer.l"
+#line 92 "lexer.l"
 {tk=allocToken();
             setTokenArgs(tk,yytext,-1,lineno,colno,ARITHMETIC_OPERATOR);
             colno+=strlen(yytext);
@@ -976,7 +975,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 99 "lexer.l"
+#line 98 "lexer.l"
 {tk=allocToken();
             setTokenArgs(tk,yytext,-1,lineno,colno,IDENTIFIER);
             colno+=strlen(yytext);
@@ -984,7 +983,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 104 "lexer.l"
+#line 103 "lexer.l"
 {tk=allocToken();
             setTokenArgs(tk,yytext,-1,lineno,colno,ARITHMETIC_OPERATOR);
             colno+=strlen(yytext);
@@ -992,7 +991,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 110 "lexer.l"
+#line 109 "lexer.l"
 {tk=allocToken();
                                 setTokenArgs(tk,yytext,-1,lineno,colno,SYMBOL);
                                 colno+=strlen(yytext);
@@ -1000,7 +999,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 116 "lexer.l"
+#line 115 "lexer.l"
 {tk=allocToken();
                  setTokenArgs(tk,yytext,-1,lineno,colno,SPECIAL_SYMBOL);
                  colno+=strlen(yytext);
@@ -1008,7 +1007,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 121 "lexer.l"
+#line 120 "lexer.l"
 {tk=allocToken();
             setTokenArgs(tk,yytext,-1,lineno,colno,ASSIGNMENT_OPERATOR);
             colno+=strlen(yytext);
@@ -1016,7 +1015,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 129 "lexer.l"
+#line 128 "lexer.l"
 { int i=0;
                while(yytext[i]!='\0'){
                    if(yytext[i]=='\n')
@@ -1034,28 +1033,28 @@ YY_RULE_SETUP
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 144 "lexer.l"
+#line 143 "lexer.l"
 {lineno++;colno=1;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 145 "lexer.l"
+#line 144 "lexer.l"
 {colno+= strlen(yytext);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 146 "lexer.l"
+#line 145 "lexer.l"
 {colno+=strlen(yytext);}
 	YY_BREAK
 case 12:
 /* rule 12 can match eol */
 YY_RULE_SETUP
-#line 147 "lexer.l"
+#line 146 "lexer.l"
 {lineno++;colno=1;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 150 "lexer.l"
+#line 149 "lexer.l"
 {tk=allocToken();
             setTokenArgs(tk,yytext,-1,lineno,colno,RELATIONAL_OPERATOR);
             colno+=strlen(yytext);
@@ -1064,7 +1063,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 155 "lexer.l"
+#line 154 "lexer.l"
 {tk=allocToken();
                                setTokenArgs(tk,yytext,-1,lineno,colno,RELATIONAL_OPERATOR);         
                                colno+=strlen(yytext);
@@ -1072,7 +1071,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 162 "lexer.l"
+#line 161 "lexer.l"
 {tk=allocToken();
 setTokenArgs(tk,yytext,-1,lineno,colno,KEYWORD);
 colno+=strlen(yytext);
@@ -1080,7 +1079,7 @@ return tk;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 167 "lexer.l"
+#line 166 "lexer.l"
 {tk=allocToken();
 setTokenArgs(tk,yytext,-1,lineno,colno,KEYWORD);
 colno+=strlen(yytext);
@@ -1088,7 +1087,7 @@ return tk;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 172 "lexer.l"
+#line 171 "lexer.l"
 {tk=allocToken();
 setTokenArgs(tk,yytext,-1,lineno,colno,KEYWORD);
 colno+=strlen(yytext);
@@ -1096,7 +1095,7 @@ return tk;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 177 "lexer.l"
+#line 176 "lexer.l"
 {tk=allocToken();
             setTokenArgs(tk,yytext,-1,lineno,colno,NUMERICAL_CONSTANT);
             colno+=1;
@@ -1104,7 +1103,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 182 "lexer.l"
+#line 181 "lexer.l"
 {tk=allocToken();
             setTokenArgs(tk,yytext,-1,lineno,colno,IDENTIFIER);
             colno+=1;
@@ -1112,10 +1111,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 187 "lexer.l"
+#line 186 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 1119 "lex.yy.c"
+#line 1118 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2120,7 +2119,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 187 "lexer.l"
+#line 186 "lexer.l"
 
 
 int  main(int argc,char **argv)
@@ -2134,10 +2133,11 @@ int  main(int argc,char **argv)
    yyin=fopen(argv[1],"r");
    int cnt=0;
    while(tk=yylex()){
-        printf("\n%d\t\t%s\t\t%d\t\t%d\t\t%s\n\n",cnt,tk->lexeme,tk->rowno,tk->colno,Type(tk));
+        //printf("<\n%d\t\t%s\t\t%d\t\t%d\t\t%s\n\n>",cnt,tk->lexeme,tk->rowno,tk->colno,Type(tk));
         
         cnt++;
    INSERT(tk);
+   //Display();
    }
 return 0;
 }
