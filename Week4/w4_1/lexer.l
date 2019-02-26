@@ -36,6 +36,8 @@ return "SYMBOL";
 
 case 8:
 return "ASSIGNMENT_OPERATOR";
+case 9:
+return "FUNCTION";
 default:
 return "UNIDENTIFIED";
 
@@ -184,6 +186,14 @@ tk->scope=scope;
 
 
 
+("include")  {lineno++;colno=1;}
+("stdio")  {lineno++;colno=1;}
+("stdlib")  {lineno++;colno=1;}
+("string")  {lineno++;colno=1;}
+("math")  {lineno++;colno=1;}
+("conio")  {lineno++;colno=1;}
+(".h")  {lineno++;colno=1;}
+
 ("auto","break","case","const","continue","default","do","double","switch","union","FILE")              {tk=allocToken();
 setTokenArgs(tk,yytext,-1,lineno,colno,KEYWORD,size,scope);
 colno+=strlen(yytext);
@@ -217,7 +227,7 @@ return tk;}
 
 [a-zA-Z0-9][a-zA-Z0-9_]*"(".*")" {
 tk=allocToken();
-            setTokenArgs(tk,yytext,-1,lineno,colno,IDENTIFIER,size,scope);
+            setTokenArgs(tk,yytext,-1,lineno,colno,FUNCTION,size,scope);
             colno+=1;
             size=sizeof(yytext);
             return tk;
@@ -225,10 +235,12 @@ tk=allocToken();
 
 ([_]|[a-zA-Z0-9])[a-zA-Z0-9]+ {
 tk=allocToken();
-            setTokenArgs(tk,yytext,-1,lineno,colno,IDENTIFIER,size,scope);
+            setTokenArgs(tk,yytext,-1,lineno,colno,FUNCTION,size,scope);
             colno+=1;
             size=sizeof(yytext);
             return tk;
+
+
 }
 %%
 
@@ -242,7 +254,7 @@ int  main(int argc,char **argv)
    }
    yyin=fopen(argv[1],"r");
    int cnt=0;
-   printf("\n        Lexeme        Type        Size       Scope");
+   printf("\n        Lexeme   Function_Name   Arguments     Type        Size       Scope");
    while(tk=yylex()){
          if(tk->scope>0)
           printf("\n       %s        %s        %d       L",tk->lexeme,Type(tk),tk->size);
