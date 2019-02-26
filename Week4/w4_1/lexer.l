@@ -47,7 +47,8 @@ return "UNIDENTIFIED";
 
 
 
-int lineno=1,colno=1;
+int lineno=1,colno=1,size=0,scope=0;
+char sc;
 //struct token* tk;
 struct token* allocToken(){
 struct token* tk;
@@ -58,12 +59,13 @@ tk->lexeme=(char*)malloc(sizeof(char)*3);
     
     tk->index=-1;
     tk->type=EOFILE;
+    tk->size=sizeof(tk->lexeme);
     return tk;
 
 }
 
 
-void setTokenArgs(struct token *tk,char *lexeme,int index,int rowno,int colno,enum tokenType type)
+void setTokenArgs(struct token *tk,char *lexeme,int index,int rowno,int colno,enum tokenType type,int size,int scope)
 {
 
 if(tk==NULL)
@@ -74,6 +76,9 @@ tk->index=index;
 tk->rowno=rowno;
 tk->colno=colno;
 tk->type=type;
+tk->size=size;
+tk->scope=scope;
+//strcpy(tk->sc,sc);
 }
 %}
 
@@ -84,41 +89,61 @@ tk->type=type;
           
 
 ("!","&&","||","|^",",",":")      {tk=allocToken();
-            setTokenArgs(tk,yytext,-1,lineno,colno,LOGICAL_OPERATOR);
+            setTokenArgs(tk,yytext,-1,lineno,colno,LOGICAL_OPERATOR,size,scope);
             colno+=strlen(yytext);
+            size=sizeof(yytext);
             return tk;}
 
 ['^','+','*','/','-']     {tk=allocToken();
-            setTokenArgs(tk,yytext,-1,lineno,colno,ARITHMETIC_OPERATOR);
+            setTokenArgs(tk,yytext,-1,lineno,colno,ARITHMETIC_OPERATOR,size,scope);
             colno+=strlen(yytext);
+            size=sizeof(yytext);
             return tk;}     
 
 
 ("_","r")       {tk=allocToken();
-            setTokenArgs(tk,yytext,-1,lineno,colno,IDENTIFIER);
+            setTokenArgs(tk,yytext,-1,lineno,colno,IDENTIFIER,size,scope);
             colno+=strlen(yytext);
+            size=sizeof(yytext);
             return tk;}
 
 ("++","--","exp")     {tk=allocToken();
-            setTokenArgs(tk,yytext,-1,lineno,colno,ARITHMETIC_OPERATOR);
+            setTokenArgs(tk,yytext,-1,lineno,colno,ARITHMETIC_OPERATOR,size,scope);
             colno+=strlen(yytext);
+            size=sizeof(yytext);
             return tk;} 
 
 
-['(',')','{','}','[',']']      {tk=allocToken();
-                                setTokenArgs(tk,yytext,-1,lineno,colno,SYMBOL);
+['(',')','[',']']      {tk=allocToken();
+                                setTokenArgs(tk,yytext,-1,lineno,colno,SYMBOL,size,scope);
                                 colno+=strlen(yytext);
+                                size=sizeof(yytext);
+                                return tk;}
+
+['{']                   {tk=allocToken();
+                                setTokenArgs(tk,yytext,-1,lineno,colno,SYMBOL,size,scope);
+                                colno+=strlen(yytext);
+                                scope++;
+                                size=sizeof(yytext);
+                                return tk;}
+['}']                   {tk=allocToken();
+                                setTokenArgs(tk,yytext,-1,lineno,colno,SYMBOL,size,scope);
+                                colno+=strlen(yytext);
+                                scope--;
+                                size=sizeof(yytext);
                                 return tk;}
 
 
 (";")     {tk=allocToken();
-                 setTokenArgs(tk,yytext,-1,lineno,colno,SPECIAL_SYMBOL);
+                 setTokenArgs(tk,yytext,-1,lineno,colno,SPECIAL_SYMBOL,size,scope);
                  colno+=strlen(yytext);
+                 size=sizeof(yytext);
                  return tk;}
 
 "="      {tk=allocToken();
-            setTokenArgs(tk,yytext,-1,lineno,colno,ASSIGNMENT_OPERATOR);
+            setTokenArgs(tk,yytext,-1,lineno,colno,ASSIGNMENT_OPERATOR,size,scope);
             colno+=strlen(yytext);
+            size=sizeof(yytext);
             return tk;}
 
                         
@@ -145,43 +170,66 @@ tk->type=type;
 \n         {lineno++;colno=1;}
 
 
-['<', '>']   {tk=allocToken();
-            setTokenArgs(tk,yytext,-1,lineno,colno,RELATIONAL_OPERATOR);
+ ['<', '>']   {tk=allocToken();
+            setTokenArgs(tk,yytext,-1,lineno,colno,RELATIONAL_OPERATOR,size,scope);
             colno+=strlen(yytext);
+            size=sizeof(yytext);
             return tk;
               }
 (">=","<=","<=","==","!=")   {tk=allocToken();
-                               setTokenArgs(tk,yytext,-1,lineno,colno,RELATIONAL_OPERATOR);         
+                               setTokenArgs(tk,yytext,-1,lineno,colno,RELATIONAL_OPERATOR,size,scope);         
                                colno+=strlen(yytext);
+                               size=sizeof(yytext);
                                return tk;}
 
 
 
 ("auto","break","case","const","continue","default","do","double","switch","union","FILE")              {tk=allocToken();
-setTokenArgs(tk,yytext,-1,lineno,colno,KEYWORD);
+setTokenArgs(tk,yytext,-1,lineno,colno,KEYWORD,size,scope);
 colno+=strlen(yytext);
+size=sizeof(yytext);
 return tk;}
 
 ("else","enum","extern","float","for","goto","if","int","typedef")  {tk=allocToken();
-setTokenArgs(tk,yytext,-1,lineno,colno,KEYWORD);
+setTokenArgs(tk,yytext,-1,lineno,colno,KEYWORD,size,scope);
 colno+=strlen(yytext);
+size=sizeof(yytext);
 return tk;}
 
 ("long","register","return","short","signed","sizeof","static","struct","unsigned")  {tk=allocToken();
-setTokenArgs(tk,yytext,-1,lineno,colno,KEYWORD);
+setTokenArgs(tk,yytext,-1,lineno,colno,KEYWORD,size,scope);
 colno+=strlen(yytext);
+size=sizeof(yytext);
 return tk;}
 
 [0-9]+    {tk=allocToken();
-            setTokenArgs(tk,yytext,-1,lineno,colno,NUMERICAL_CONSTANT);
+            setTokenArgs(tk,yytext,-1,lineno,colno,NUMERICAL_CONSTANT,size,scope);
             colno+=1;
+            size=sizeof(yytext);
             return tk;}
              
 [aA-zZ]+  {tk=allocToken();
-            setTokenArgs(tk,yytext,-1,lineno,colno,IDENTIFIER);
+            setTokenArgs(tk,yytext,-1,lineno,colno,IDENTIFIER,size,scope);
             colno+=1;
+            size=sizeof(yytext);
             return tk;}             
               
+
+[a-zA-Z0-9][a-zA-Z0-9_]*"(".*")" {
+tk=allocToken();
+            setTokenArgs(tk,yytext,-1,lineno,colno,IDENTIFIER,size,scope);
+            colno+=1;
+            size=sizeof(yytext);
+            return tk;
+}
+
+([_]|[a-zA-Z0-9])[a-zA-Z0-9]+ {
+tk=allocToken();
+            setTokenArgs(tk,yytext,-1,lineno,colno,IDENTIFIER,size,scope);
+            colno+=1;
+            size=sizeof(yytext);
+            return tk;
+}
 %%
 
 int  main(int argc,char **argv)
@@ -194,11 +242,15 @@ int  main(int argc,char **argv)
    }
    yyin=fopen(argv[1],"r");
    int cnt=0;
+   printf("\n        Lexeme        Type        Size       Scope");
    while(tk=yylex()){
-        //printf("<\n%d\t\t%s\t\t%d\t\t%d\t\t%s\n\n>",cnt,tk->lexeme,tk->rowno,tk->colno,Type(tk));
+         if(tk->scope>0)
+          printf("\n       %s        %s        %d       L",tk->lexeme,Type(tk),tk->size);
+         else
+          printf("\n       %s        %s        %d       G",tk->lexeme,Type(tk),tk->size);
         
         cnt++;
-   INSERT(tk);
+   //INSERT(tk);
    //Display();
    }
 return 0;

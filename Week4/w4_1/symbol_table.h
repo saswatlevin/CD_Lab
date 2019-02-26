@@ -39,7 +39,8 @@ struct token
     enum tokenType type;
     int scope;
     int varType;
-    
+    int size;
+    char sc;
 }token;
 
 struct token *tk;
@@ -107,7 +108,8 @@ void INSERT(struct token *tk){
 
     cur->tok=tk;
     cur->next=NULL;
-    if(TABLE[val]==NULL){
+    printf("\nAfter cur"); 
+   if(TABLE[val]==NULL){
       TABLE[val]=cur;
     }
    else{
