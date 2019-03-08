@@ -1,0 +1,27 @@
+int main ( ) { 
+	int a, b; 
+	int c ; 
+	a = c ; 
+	a = a + a * a ;
+	a = b = c;
+	if ( b == b ) { 
+		c = c ; 
+	} else { 
+		c = a ; 
+	} 
+	int id ; int num ; int p;
+	for ( id = 45 ; id == 3 ; id = id + 7 ) { 
+		id = id * id ; 
+	} 
+	switch ( id )
+	{
+		case 1 : 	id = id ;
+					p = 45 ;
+					id = id * num ; 
+					break ;
+		case '@' : id = id	; 
+		case 'b' : id = id ;
+		default : id = id ;
+				a = id * 3 ;
+	}
+}

@@ -1,0 +1,32 @@
+null statements are not handled
+
+nesting is not handled
+
+num stands for all numbers
+
+and id stands for all identifiers and constants
+
+can't have declaration and assignment in same line
+like int a=5; NOT ALLOWED
+BUT
+int a;
+a=5;
+IS ALLOWED
+
+
+int a,g ALLOWED
+a = b= c ALLOWED
+a=2, b=3 NOT ALLOWED
+
+.........
+to do:
+constant numbers and characters. DONE
+break. DONE
+..........
+
+
+
+
+how to ensure that 2 cases so not have the same constant expression
+GNT
+actual id and numbers in place of id and num

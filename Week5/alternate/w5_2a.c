@@ -1,94 +1,122 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "lexer.c"
+char *lookahead;
 void procE();
 void procT();
 void procF();
 void procEE();
 void procTT();
 
-char input[30];
-int i=0;
+
+FILE *in;
+char *lookahead;
+
 
 void procE()
-{
+{  
+   printf("\nIn procE");	
    procT();
    procEE();
 }
 
 void procEE()
 {
-	if(input[i]=='+'){
-		i++;
+	printf("\nIn procEE");
+	
+	lookahead=getNextToken(in);
+    printf("\nLookahead=%s\t",lookahead);
+
+	if((strcmp(lookahead,"+")==0))
+	{
+		lookahead=getNextToken(in);
+		printf("\nInside if EE Lookahead=%s\t",lookahead);
+
 		procT();
-	    procEE();
+		procEE();
 	}
-  /*else
-  {
-  	printf("\nError in +");
-    exit(0);
-  }*/
+
 }
 
+
 void procT()
-{
+{   
+    printf("\nIn procT");
 	procF();
 	procTT();
 }
 
 void procTT()
 {
-    if(input[i]=='*')
-    {   i++;
-        procF();
-        procTT();
-    }
-    /*else
-    {
-    printf("\nError in *");
-    exit(0);	
-    }*/	
+	printf("\nIn ProcTT");
+    lookahead=getNextToken(in);
+	printf("\nLookahead=%s",lookahead);
+    
+	if(strcmp(lookahead,"*")==0)
+	{
+		lookahead=getNextToken(in);
+		printf("\nInside if TT Lookahead=%s\t",lookahead);
+
+		procF();
+		procTT();
+	}
 }
+
 
 void procF()
 {
-	if(input[i]=='('){
-		i++;
-		procE();
-		if(input[i]==')')
-			i++;
-	    else
-	    {
-	    printf("\nError in brackets");	
-	    }
-	 } 
-	 else if(input[i]=='i' && input[i+1]=='d')
-	    	i=i+2;
-
-	    else{
-	    	printf("\nError in id");
-	        exit(0);
-	    }
-	  }
-	  
-
-
-
-int main(int argc, char *argv[])
-{  
+	printf("\nIn ProcF");
+	lookahead=getNextToken(in);
+	printf("\nLookahead=%s\t",lookahead);
     
+    if(strcmp(lookahead,"(")==0)
+	{
+		lookahead=getNextToken(in);
+		procE();
+		if(strcmp(lookahead,")")==0)
+			lookahead=getNextToken(in);
+		else
+		{
+			printf("\n ERROR \n");
+			exit(0);
+		}	
+	}
+	else if(strcmp(lookahead,"id")==0)
+		lookahead=getNextToken(in);
+	else
+	{
+		printf("\n ERROR \n");
+		exit(0);
+	}
+	
 
-    printf("\nEnter a string ");
-    scanf("%s",input);
+}
+
+
+
+
+void main()
+{  
+   in=fopen("strings.c","r");
+    
+     
+    if(in==NULL){
+    	printf("\nFile not found");
+    	exit(0);
+    }
+
+    
     procE();
-    int k=strlen(input);
-    k=k-1;
-    if(input[i]=='$' && i==k)
+    
+    
+    printf("\nLookahead=%s",lookahead);
+    
+    if(strcmp(lookahead,"$")==0)
 
     	printf("\nSuccess");
 	else
 		printf("\nError");
 
-	return 0;
+	fclose(in);
 }

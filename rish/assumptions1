@@ -1,0 +1,10 @@
+rn my program has only 4 data types int, float, double, char
+no expression has () or {} or []
+arrays are declared as data_type name[], no malloc business for now
+a block is defined by func/for loop/ do/ while/switch
+2 funcs with same name- not allowed
+2 cases of switch with same constant: will work but not allowed
+
+can't have num, need to have a number
+
+for(int i=0;i<3;i++); not allowed as scope changes back only on encountering a '}'
