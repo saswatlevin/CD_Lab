@@ -1,0 +1,48 @@
+write the a.y file
+compile a.y file using bison -d a.y , it generates a.tab.c & a.tab.h files
+
+write a.l file include the a.tab.h 
+comile flex code using flex a.l , it generates lex.yy.c & a.out file
+
+gcc lex.yy.c a.tav.c -o output
+./output
+
+
+
+********************************************************
+student@lplab-ThinkCentre-M71e:~/160905440 cd/week 7$ bison -d a.y
+student@lplab-ThinkCentre-M71e:~/160905440 cd/week 7$ flex a.l
+student@lplab-ThinkCentre-M71e:~/160905440 cd/week 7$ gcc lex.yy.c a.tab.c  -o op
+student@lplab-ThinkCentre-M71e:~/160905440 cd/week 7$ ./op
+in.txt file opened
+
+1
+/3
+Invalid expression
+Failure
+
+
+*********************************************************
+
+student@lplab-ThinkCentre-M71e:~/160905440 cd/week 7$ bison -d a.y
+student@lplab-ThinkCentre-M71e:~/160905440 cd/week 7$ flex a.l
+student@lplab-ThinkCentre-M71e:~/160905440 cd/week 7$ gcc lex.yy.c a.tab.c  -o op
+student@lplab-ThinkCentre-M71e:~/160905440 cd/week 7$ ./op
+in.txt file opened
+
+1
++
+3
+
+Success
+
+
+*****************************************************
+
+s->a|ebs
+
+then 
+s : a
+    | 
+
+after | space defines ebs

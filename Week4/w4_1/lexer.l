@@ -193,6 +193,7 @@ tk->scope=scope;
 ("math")  {lineno++;colno=1;}
 ("conio")  {lineno++;colno=1;}
 (".h")  {lineno++;colno=1;}
+ 
 
 ("auto","break","case","const","continue","default","do","double","switch","union","FILE")              {tk=allocToken();
 setTokenArgs(tk,yytext,-1,lineno,colno,KEYWORD,size,scope);
@@ -223,25 +224,18 @@ return tk;}
             colno+=1;
             size=sizeof(yytext);
             return tk;}             
-              
 
-[a-zA-Z0-9][a-zA-Z0-9_]*"(".*")" {
-tk=allocToken();
-            setTokenArgs(tk,yytext,-1,lineno,colno,FUNCTION,size,scope);
-            colno+=1;
-            size=sizeof(yytext);
-            return tk;
+
+
+
+
+["for"]["(".*")"] {
+lineno++;colno=strlen(yytext);
 }
-
-([_]|[a-zA-Z0-9])[a-zA-Z0-9]+ {
-tk=allocToken();
-            setTokenArgs(tk,yytext,-1,lineno,colno,FUNCTION,size,scope);
-            colno+=1;
-            size=sizeof(yytext);
-            return tk;
+    
 
 
-}
+
 %%
 
 int  main(int argc,char **argv)
