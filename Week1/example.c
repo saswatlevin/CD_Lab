@@ -3,6 +3,7 @@
 int main()
 {
 	FILE *fa,*fb;
+  
 	int ca,cb;
 	fa=fopen("test1.c","r");
 	if(fa==NULL){
