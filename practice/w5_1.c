@@ -1,56 +1,73 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#define SIZE 20
 
-char input[20];
 
-void S();
-void T();
-void TT();
+void procS();
+void procT();
+void procTT();
 
-int count;
+char input[30];
+int i=0;
 
-void S()
-{
-	if(input[count]=='a')
-		count++;
-	else if (input[count]=='<')
-		count++;
-    else
-    	T();    
-    
+void procS(){
+  
+     if(input[i]=='a')
+         i++;
+      else if(input[i]=='>')
+              i++;
+       else if(input[i]=='('){
+            i++; 
+            procT();
+        if(input[i]==')') 
+            i++;
+         else{
+            printf("\nError in )");
+            exit(0);
+         }
+       }
+  else{
+  printf("\nError in a");  
+  exit(0);
 }
 
-void T()
-{
-	S();
-	TT();
+
+
 }
 
-void TT()
-{
-	if(input[count]==',')
-	{	count++;
-        S();
-        TT();
-    }
+void procT(){
+
+  procS();
+  procTT();
+
 }
 
-int main()
+void procTT(){
+
+  
+    if(input[i]==','){
+       i++;
+       procS();
+       procTT();     
+     }
+
+
+}
+
+int main(int argc,char *argv[])
 {
-int i;
-
-printf("\nEnter input \t");
-
-scanf("%s",input);
-int len=strlen(input);
-
-S();
-if(input[count]=='$' && len==count-1)
-	printf("\nSuccess");
-
-else
-	printf("\nFailure");
-
-return 0;
+  printf("\nEnter the input string ");
+  scanf("%s",input);
+  procS(); 
+  int k=strlen(input);
+  if(input[i]=='$' && i==k)
+  {
+    printf("\nSuccess");
+  }
+  else
+  {
+    printf("\nError");	
+  }
+  
+  return 0;
 }

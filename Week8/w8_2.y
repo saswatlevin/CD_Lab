@@ -59,7 +59,7 @@ extern FILE *yyin;
 %token ADDOP   //+ and -
 %token MULOP   // multiplication operator * and division operator /
 %token EQUAL
-
+i
 
 %token NUMBER
 %token IDENTIFIER
